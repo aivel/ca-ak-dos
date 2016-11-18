@@ -1,14 +1,93 @@
 #include "DefStructs.c"
 
+char* code_data_descr_type_decode(uint8 type)
+{
+    switch(type) {
+        case 0:
+            return "Data, Read-Only";
+        case 1:
+            return "Data, Read-Only, accessed";
+        case 2:
+            return "Data, Read/Write";
+        case 3:
+            return "Data, Read/Write, accessed";
+        case 4:
+            return "Data, Read-Only, expand-down";
+        case 5:
+            return "Data, Read-Only, expand-down, accessed";
+        case 6:
+            return "Data, Read/Write, expand-down";
+        case 7:
+            return "Data, Read/Write, expand-down, accessed";
+        case 8:
+            return "Code, Execute-Only";
+        case 9:
+            return "Code, Execute-Only, accessed";
+        case 10:
+            return "Code, Execute/Read";
+        case 11:
+            return "Code, Execute/Read, accessed";
+        case 12:
+            return "Code, Execute-Only, conforming";
+        case 13:
+            return "Code, Execute-Only, conforming, accessed";
+        case 14:
+            return "Code, Execute/Read, conforming";
+        case 15:
+            return "Code, Execute/Read, conforming, accessed";
+        default:
+            return "Error!";
+    }
+
+}
+
+char* system_descr_type_decode(uint8 type)
+{
+    switch(type) {
+        case 0:
+            return "Reserved";
+        case 1:
+            return "16-bit TSS (Available)";
+        case 2:
+            return "LDT";
+        case 3:
+            return "16-bit TSS (Busy)";
+        case 4:
+            return "16-bit Call Gate";
+        case 5:
+            return "Task Gate";
+        case 6:
+            return "16-bit Interrupt Gate";
+        case 7:
+            return "16-bit Trap Gate";
+        case 8:
+            return "Reserved";
+        case 9:
+            return "32-bit TSS (Available)";
+        case 10:
+            return "Reserved";
+        case 11:
+            return "32-bit TSS (Busy)";
+        case 12:
+            return "32-bit Call Gate";
+        case 13:
+            return "Reserved";
+        case 14:
+            return "32-bit Interrupt Gate";
+        case 15:
+            return "32-bit Trap Gate";
+        default:
+            return "Error!";
+    }
+}
+
 void fprint_descripor(FILE* f, PDESCRIPTOR d)
 {
-    fprintf(f, "\tVALUE=0x%08X-%08X PRESENT=%s \n", d->raw.high, d->raw.low, d->desc.p ? "yes":"no");
+    fprintf(f, "\tVALUE=0x%08X-%08X PRESENT=[%s] \n", d->raw.high, d->raw.low, d->desc.p ? "yes":"no");
     if (d->desc.p) {
         fprintf(f, "\tBASE=0x%08X LIMIT=0x%08X \n", BASE_FROM_DESCRIPTOR(d), LIMIT_FROM_DESCRIPTOR(d));
-        fprintf(f, "\tRING=%d TYPE=0x%X SYSTEM=%s DB=%s\n", d->desc.dpl, d->desc.type, d->desc.s ? "segment":"system", d->desc.db ? "32bit":"16bit");
+        fprintf(f, "\tRING=%d TYPE=[%s] SYSTEM=[%s] DB=[%s]\n", d->desc.dpl, d->desc.s ? code_data_descr_type_decode(d->desc.type) : system_descr_type_decode(d->desc.type), d->desc.s ? "segment":"system", d->desc.db ? "32bit":"16bit");
     }
-    //TODO we should check s bit before
-    //TODO we should print type in textual form
 }
 
 void fprint_desctable(FILE* f, uint32* base, uint32 limit)
@@ -23,7 +102,6 @@ void fprint_desctable(FILE* f, uint32* base, uint32 limit)
         fprint_descripor(f, &d);
     }
 }
-
 
 void fprint_tables(PSYSINFO sysinfo)
 {
