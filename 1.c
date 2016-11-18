@@ -151,6 +151,42 @@ void fprint_tables(PSYSINFO sysinfo)
 	if (0 == tss_dump) {
         printf("ERROR: cannot fopen tss_dump \n");
     } else {
+		PTSS tss;
+		uint32* base;
+		 base = (uint32*)(sysinfo->gdt.base);
+		base = base+((sysinfo->tr)>>3)*2;
+		tss = (PTSS)base;
+			
+        fprintf(tss_dump,"%08X\n", tss->link);
+        fprintf(tss_dump,"%08X\n",  tss->esp0);
+        fprintf(tss_dump,"%08X\n",  tss->ss0);
+        fprintf(tss_dump,"%08X\n",  tss->esp1);
+        fprintf(tss_dump,"%08X\n",  tss->ss1);
+        fprintf(tss_dump,"%08X\n",  tss->esp2);
+        fprintf(tss_dump,"%08X\n",  tss->ss2);
+        fprintf(tss_dump,"%08X\n",  tss->CR3);
+        fprintf(tss_dump,"%08X\n",  tss->EIP);
+        fprintf(tss_dump,"%08X\n",  tss->EFLAGS);
+        fprintf(tss_dump,"%08X\n",  tss->EAX);
+        fprintf(tss_dump,"%08X\n",  tss->ECX);
+        fprintf(tss_dump,"%08X\n",  tss->EDX);
+        fprintf(tss_dump,"%08X\n",  tss->EBX);
+        fprintf(tss_dump,"%08X\n",  tss->ESP);
+        fprintf(tss_dump,"%08X\n",  tss->EBP);
+        fprintf(tss_dump,"%08X\n",  tss->ESI);
+        fprintf(tss_dump,"%08X\n",  tss->EDI);
+        fprintf(tss_dump,"%08X\n",  tss->ES);
+        fprintf(tss_dump,"%08X\n",  tss->CS);
+        fprintf(tss_dump,"%08X\n",  tss->SS);
+        fprintf(tss_dump,"%08X\n",  tss->DS);
+        fprintf(tss_dump,"%08X\n",  tss->FS);
+        fprintf(tss_dump,"%08X\n",  tss->GS);
+        fprintf(tss_dump,"%08X\n",  tss->LDTR);
+        fprintf(tss_dump,"%08X\n",  tss->_IOmap);
+	
+
+
+		//printf("");
         //fprint_desctable(, (uint32*)sysinfo->idt.base, sysinfo->idt.limit);
     }
 
