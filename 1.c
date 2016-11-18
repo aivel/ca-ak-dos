@@ -45,7 +45,7 @@ void fprint_tables(PSYSINFO sysinfo)
     //print IDT
     idt_dump = fopen("a:\\idt_dump.txt","w");
     if (0 == idt_dump) {
-        printf("ERROR: cannot fopen gdt_dump \n");
+        printf("ERROR: cannot fopen idt_dump \n");
     } else {
         fprint_desctable(idt_dump, (uint32*)sysinfo->idt.base, sysinfo->idt.limit);
     }
@@ -53,18 +53,18 @@ void fprint_tables(PSYSINFO sysinfo)
 	//print LDT
 	ldt_dump =  fopen("a:\\ldt_dump.txt","w");	
 	if (0 == ldt_dump) {
-        printf("ERROR: cannot fopen gdt_dump \n");
+        printf("ERROR: cannot fopen ldt_dump \n");
     } else {
-		d.raw.low = sysinfo->gdt[((sysinfo->ldtr)>>3)*2];
-		d.raw.high = sysinfo->gdt[((sysinfo->ldtr)>>3)*2+1];
-		fprint_descripor(ldt_dump,&d);
+		//d.raw.low = sysinfo->gdt[((sysinfo->ldtr)>>3)*2];
+		//d.raw.high = sysinfo->gdt[((sysinfo->ldtr)>>3)*2+1];
+		//fprint_descripor(ldt_dump,&d);
         //fprint_desctable(, (uint32*)sysinfo->idt.base, sysinfo->idt.limit);
     }
 	
 	//print TSS
 	tss_dump =  fopen("a:\\tss_dump.txt","w");	
 	if (0 == tss_dump) {
-        printf("ERROR: cannot fopen gdt_dump \n");
+        printf("ERROR: cannot fopen tss_dump \n");
     } else {
         //fprint_desctable(, (uint32*)sysinfo->idt.base, sysinfo->idt.limit);
     }
@@ -76,6 +76,17 @@ void fprint_tables(PSYSINFO sysinfo)
 	fclose(tss_dump);
 }
 
+void print_info(PSYSINFO sysinfo){
+	printf("Protected Mode: %s \n", (sysinfo->cr0 & MASK(CR0_PE))?"on":"off");
+    printf("Paging Mode: %s \n",    (sysinfo->cr0 & MASK(CR0_PG))?"on":"off");
+    printf("Ring: CPL=%d \n",       sysinfo->cpl);
+    printf("================ \n");
+    printf("GDT: base=0x%08X limit=0x%04X \n", sysinfo->gdt.base, sysinfo->gdt.limit);
+    printf("IDT: base=0x%08X limit=0x%04X \n", sysinfo->idt.base, sysinfo->idt.limit);
+	printf("LDTR: 0x%X\n",sysinfo->ldtr);
+	printf("TR: 0x%X\n", sysinfo->tr);
+
+}
 
 void main()
 {
@@ -84,26 +95,7 @@ void main()
     memset(&sysinfo, 0, sizeof(sysinfo));
     get_sysinfo(&sysinfo);
 
+    print_info(&sysinfo);
     
-	printf("TASK 1\n");
-    printf("Protected Mode: %s \n", (sysinfo.cr0 & MASK(CR0_PE))?"on":"off");
-    printf("Paging Mode: %s \n",    (sysinfo.cr0 & MASK(CR0_PG))?"on":"off");
-    printf("Ring: CPL=%d \n",       sysinfo.cpl);
-    printf("================ \n");
-    printf("GDT: base=0x%08X limit=0x%04X \n", sysinfo.gdt.base, sysinfo.gdt.limit);
-    printf("IDT: base=0x%08X limit=0x%04X \n", sysinfo.idt.base, sysinfo.idt.limit);
-	printf("LDTR: 0x%X\n",sysinfo.ldtr);
-	printf("TR: 0x%X\n", sysinfo.tr);
-
     fprint_tables(&sysinfo);
-
-   // paging_task();
-   // pf_test(&sysinfo);
-
-    /*
-    __asm {
-        xor ax,ax
-        mov cs,ax
-    }
-    */
 }
