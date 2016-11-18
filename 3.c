@@ -1,12 +1,14 @@
 #include "DefStructs.c"
 #define UD_EXCEPTION 6
 
-void __declspec( naked ) ud_handler(void){
+void __declspec( naked ) ud_handler(void)
     __asm{
+		mov ax,1
+		mov cs,ax//gpf
     }
 }
 
-void set_handler(PSYSINFO sysinfo){
+void set_ud_handler(PSYSINFO sysinfo){
     uint32 offset_ud;
     uint16 segment;
     PIDTENTRY idt_table = (PIDTENTRY)sysinfo->idt.base;
@@ -27,7 +29,7 @@ void main(){
     memset(&sysinfo, 0, sizeof(sysinfo));
     get_sysinfo(&sysinfo);
 
-    set_handler(&sysinfo);
+    set_ud_handler(&sysinfo);
 
     __asm {
         xor ax,ax;
