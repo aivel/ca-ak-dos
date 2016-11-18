@@ -1,0 +1,45 @@
+!define BLANK ""
+F:\1.obj : F:\src\1.c .AUTODEPEND
+ @F:
+ cd F:\
+ *wcc386 \src\1.c -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj&
+ -mf
+
+F:\2.obj : F:\src\2.c .AUTODEPEND
+ @F:
+ cd F:\
+ *wcc386 \src\2.c -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj&
+ -mf
+
+F:\3.obj : F:\src\3.c .AUTODEPEND
+ @F:
+ cd F:\
+ *wcc386 \src\3.c -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj&
+ -mf
+
+F:\4.obj : F:\src\4.c .AUTODEPEND
+ @F:
+ cd F:\
+ *wcc386 \src\4.c -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj&
+ -mf
+
+F:\common.obj : F:\src\common.c .AUTODEPEND
+ @F:
+ cd F:\
+ *wcc386 \src\common.c -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo&
+=.obj -mf
+
+F:\main.obj : F:\src\main.c .AUTODEPEND
+ @F:
+ cd F:\
+ *wcc386 \src\main.c -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.&
+obj -mf
+
+F:\sys.exe : F:\1.obj F:\2.obj F:\3.obj F:\4.obj F:\common.obj F:\main.obj .&
+AUTODEPEND
+ @F:
+ cd F:\
+ @%write \sys.lk1 FIL \1.obj,\2.obj,\3.obj,\4.obj,\common.obj,\main.obj
+ @%append \sys.lk1 
+ *wlink name \sys d all sys dos32a op m op maxe=25 op q op symf @\sys.lk1
+

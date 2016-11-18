@@ -1,4 +1,13 @@
-#include "DefStructs.c"
+#ifndef H_STANDARD
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <string.h>
+    #define H_STANDARD
+#endif
+
+#ifndef H_STRUCTS
+    #include "structs.h"
+#endif
 
 void fprint_descripor(FILE* f, PDESCRIPTOR d)
 {
@@ -10,6 +19,7 @@ void fprint_descripor(FILE* f, PDESCRIPTOR d)
     //TODO we should check s bit before
     //TODO we should print type in textual form
 }
+
 
 void fprint_desctable(FILE* f, uint32* base, uint32 limit)
 {
@@ -85,10 +95,10 @@ void print_info(PSYSINFO sysinfo){
     printf("IDT: base=0x%08X limit=0x%04X \n", sysinfo->idt.base, sysinfo->idt.limit);
 	printf("LDTR: 0x%X\n",sysinfo->ldtr);
 	printf("TR: 0x%X\n", sysinfo->tr);
-
 }
 
-void main()
+
+void task_1()
 {
     SYSINFO sysinfo;
 

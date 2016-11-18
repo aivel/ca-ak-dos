@@ -1,6 +1,12 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#define H_STRUCTS
+
+#ifndef H_STANDARD
+    #include "stdlib.h"
+    #include "stdio.h"
+    #include "string.h"
+    #define H_STANDARD
+#endif
+
 #define CR0_PE 0
 #define CR0_PG 31
 #define CR4_PSE 4

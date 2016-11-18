@@ -1,9 +1,21 @@
-#include "stdlib.h"
-#include "stdio.h"
-#include "string.h"
-#include "DefStructs.c"
+#ifndef H_STANDARD
+    #include "stdlib.h"
+    #include "stdio.h"
+    #include "string.h"
+    #define H_STANDARD
+#endif
 
-void idt_set_gate(PIDTENTRY idt, uint8 num, uint32 offset, uint16 seg_sel, uint8 flags) {
+#ifndef H_STRUCTS
+    #include "structs.h"
+#endif
+
+void idt_set_gate(
+    PIDTENTRY idt, 
+    uint8 num, 
+    uint32 offset, 
+    uint16 seg_sel, 
+    uint8 flags) {
+
     idt[num].offset_l = offset & 0xFFFF;
     idt[num].offset_h = (offset >> 16) & 0xFFFF;
     idt[num].seg_sel = seg_sel;
@@ -11,7 +23,7 @@ void idt_set_gate(PIDTENTRY idt, uint8 num, uint32 offset, uint16 seg_sel, uint8
     idt[num].flags = flags;
 }
 
-//TODO setup proper page addr & its pte addr
+
 uint32 PF_ADDR = 0x1FC00004; 
 uint32 my_ptr =  0xF03C01FC;
 uint32 incr = 0;
@@ -118,24 +130,13 @@ void pf_test(PSYSINFO sysinfo)
     printf("MY PF: %d\n", incr);
 }
 
-void main()
+void task_2()
 {
     SYSINFO sysinfo;
 
     memset(&sysinfo, 0, sizeof(sysinfo));
     get_sysinfo(&sysinfo);
 
-   paging_task();
-   pf_test(&sysinfo);
-
-    /*
-    __asm {
-        xor ax,ax
-        mov cs,ax
-    }
-    */
-}
-
-void hello(){
-	printf("Hello, world!");
+    paging_task();
+    pf_test(&sysinfo);
 }
