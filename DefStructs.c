@@ -18,6 +18,35 @@ typedef struct _DTR {
     uint16 _padding;
 } DTR, *PDTR;
 
+typedef struct _TSS{
+	int32 link;
+	int32 esp0;
+	int32 ss0;
+	int32 esp1;
+	int32 ss1;
+	int32 esp2;
+	int32 ss2;
+	int32 CR3;
+	int32 EIP;
+	int32 EFLAGS;
+	int32 EAX;
+	int32 ECX;
+	int32 EBX;
+	int32 ESP;
+	int32 EBP;
+	int32 ESP;
+	int32 ESI;
+	int32 EDI;
+	int32 ES;
+	int32 CS;
+	int32 SS;
+	int32 DS;
+	int32 FS;
+	int32 GS;
+	int32 LDTR;
+	int32 _IOmap;
+} TSS, *PTSS;
+
 typedef union _DESCRIPTOR {
     struct {
         uint32 low;
@@ -108,6 +137,7 @@ void get_sysinfo(PSYSINFO sysinfo)
 		//store tr
 		mov eax, _tr 
 		str [eax]
+
     }
     sysinfo->cpl = _cpl;
     sysinfo->cr0 = _cr0;
