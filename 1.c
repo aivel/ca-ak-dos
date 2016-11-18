@@ -55,9 +55,16 @@ void fprint_tables(PSYSINFO sysinfo)
 	if (0 == ldt_dump) {
         printf("ERROR: cannot fopen ldt_dump \n");
     } else {
-		//d.raw.low = sysinfo->gdt[((sysinfo->ldtr)>>3)*2];
-		//d.raw.high = sysinfo->gdt[((sysinfo->ldtr)>>3)*2+1];
-		//fprint_descripor(ldt_dump,&d);
+		uint32* ldt_base;
+		uint32 ldt_lim;
+		uint32* base = (uint32*)(sysinfo->gdt.base);
+		d.raw.low = base[((sysinfo->ldtr)>>3)*2];
+		d.raw.high = base[((sysinfo->ldtr)>>3)*2+1];
+		ldt_base = (uint32*) (BASE_FROM_DESCRIPTOR((&d)));
+		ldt_lim = LIMIT_FROM_DESCRIPTOR((&d));
+		if(d.desc.p){
+			fprint_desctable(ldt_dump, ldt_base, ldt_lim);
+		}
         //fprint_desctable(, (uint32*)sysinfo->idt.base, sysinfo->idt.limit);
     }
 	
