@@ -1,10 +1,11 @@
 #include "DefStructs.c"
 #define UD_EXCEPTION 6
 
-void __declspec( naked ) ud_handler(void)
+void __declspec( naked ) ud_handler(void){
     __asm{
-		mov ax,1
-		mov cs,ax//gpf
+		//sti
+        //add esp, 1
+        ret
     }
 }
 
