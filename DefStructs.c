@@ -142,3 +142,11 @@ void get_sysinfo(PSYSINFO sysinfo)
     sysinfo->cpl = _cpl;
     sysinfo->cr0 = _cr0;
 }
+
+void idt_set_gate(PIDTENTRY idt, uint8 num, uint32 offset, uint16 seg_sel, uint8 flags) {
+    idt[num].offset_l = offset & 0xFFFF;
+    idt[num].offset_h = (offset >> 16) & 0xFFFF;
+    idt[num].seg_sel = seg_sel;
+    idt[num].zero = 0;
+    idt[num].flags = flags;
+}
