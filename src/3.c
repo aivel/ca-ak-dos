@@ -9,6 +9,3 @@
 	#include "structs.h"
 #endif
 
-void task_3() {
-	printf(">> Not implemented yet\n");
-}

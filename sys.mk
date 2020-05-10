@@ -1,3 +1,3 @@
-project : F:\sys.exe .SYMBOLIC
+project : G:\sys.exe .SYMBOLIC
 
-!include F:\sys.mk1
+!include G:\sys.mk1

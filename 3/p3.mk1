@@ -1,0 +1,14 @@
+!define BLANK ""
+G:\3\main.obj : G:\3\main.c .AUTODEPEND
+ @G:
+ cd G:\3
+ *wcc386 main.c -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -&
+mf
+
+G:\3\p3.exe : G:\3\main.obj .AUTODEPEND
+ @G:
+ cd G:\3
+ @%write p3.lk1 FIL main.obj
+ @%append p3.lk1 
+ *wlink name p3 d all sys dos32a op m op maxe=25 op q op symf @p3.lk1
+
